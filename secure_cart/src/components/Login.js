@@ -20,7 +20,7 @@ const handleLogin= (e) => {
     const user_value= user.find(u => u.username === username && u.password === password);
 
     if (user_value){
-        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('user', JSON.stringify(user_value));
         alert(`welcome to Arunima's Secure_cart ${user_value.username}!`);
         window.location.href = '/shopping_cart';
     }
@@ -30,30 +30,30 @@ const handleLogin= (e) => {
 
 }
 return (
-    <div className="login-container">
-      <div className="login-box">
+    <div className="login_bg">
+      <div className="login_container">
         
         <div className="logo-section">
-          <img src="/secure_cart_logo.png" alt="Secure Cart Logo" className="logo-image"/>
-          <div className="brand-name">
-            <span className="secure-cart">Arunima's</span>
-            <span className="secure-cart">secure_cart</span>
+          <img src="/secure_cart_logo.png" alt="Secure Cart Logo" className="logo_img"/>
+          <div className="brand_name">
+            <span className="secure_cart">Arunima's</span>
+            <span className="secure_cart">secure_cart</span>
           </div>
         </div>
         
-        <div className="welcome-text">
+        <div className="welcome_text">
           Welcome to Secure_cart by Arunima@MSCCYB1_A
         </div>
-        <div className="login-instruction">
+        <div className="login_instruction">
           Please login to access the website
         </div>
 
-        <form onSubmit={handleLogin} className="login-form">
+        <form onSubmit={handleLogin} className="login_form">
           
-          {error && <div className="error-message">{error}</div>}
+          {error && <div className="error_message">{error}</div>}
           
    
-          <div className="form-group">
+          <div className="form_group">
             <label>UserName :</label>
             <input
               type="text"
@@ -65,7 +65,7 @@ return (
           </div>
           
           
-          <div className="form-group">
+          <div className="form_group">
             <label>Password:</label>
             <input
               type="password"
@@ -77,7 +77,7 @@ return (
           </div>
           
         
-          <button type="submit" className="login-button">
+          <button type="submit" className="login_button">
             LOGIN
           </button>
         </form>
