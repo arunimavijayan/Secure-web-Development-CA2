@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './ShoppingCart.css';
 
+import ContactUs from './contactUs';
+
 // No backend API - all data stored in frontend
 const initialProducts = [
   { id: 1, name: 'Laptop', price: 700, description: 'High-performance laptop', category: 'Electronics' },
@@ -17,6 +19,7 @@ const ShoppingCart = () => {
   const [cart, setCart] = useState([]);
   const [newProduct, setNewProduct] = useState({ name: '', price: '', description: '', category: '' });
   const [searchTerm, setSearchTerm] = useState(''); // Search state
+  const [activeSection, setActiveSection] = useState('products');
   
   //  No server-side authentication check
   useEffect(() => {
@@ -150,7 +153,7 @@ const ShoppingCart = () => {
             <div className="nav-section">
               <h3>Support</h3>
               <ul>
-                <li>Contact us</li>
+                <li onClick={() => setActiveSection('contact')}>Contact us</li>
                 <li>Address</li>
                 <li>Offers</li>
               </ul>
@@ -162,125 +165,132 @@ const ShoppingCart = () => {
           </nav>
         </aside>
 
-        {/* MAIN CONTENT */}
+
         <main className="main-content">
-          {/* ADMIN PRODUCT MANAGEMENT */}
-          {user.role === 'admin' && (
-            <section className="admin-section">
-              <h2>Admin - Add New Product</h2>
-              <div className="add-product-form">
-                <input
-                  type="text"
-                  placeholder="Product Name"
-                  value={newProduct.name}
-                  onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
-                />
-                <input
-                  type="number"
-                  placeholder="Price"
-                  value={newProduct.price}
-                  onChange={(e) => setNewProduct({...newProduct, price: e.target.value})}
-                />
-                <input
-                  type="text"
-                  placeholder="Description"
-                  value={newProduct.description}
-                  onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
-                />
-                <input
-                  type="text"
-                  placeholder="Category"
-                  value={newProduct.category}
-                  onChange={(e) => setNewProduct({...newProduct, category: e.target.value})}
-                />
-                <button onClick={addNewProduct}>Add Product</button>
-              </div>
-            </section>
-          )}
-
-          {/* SEARCH BAR */}
-          <section className="search_section">
-            <div className="search-container">
-              <input
-                type="text"
-                placeholder="Search products by name, description, or category..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="search-input"
-              />
-              <div className="search-results-info">
-                {searchTerm && (
-                  <p>
-                    Showing {filteredProducts.length} of {products.length} products
-                    {filteredProducts.length === 0 && ' - No products found'}
-                  </p>
-                )}
-              </div>
-            </div>
-          </section>
-
-          {/* PRODUCTS SECTION */}
-          <section className="products-section">
-            <h2>Products {searchTerm && `- Search results for "${searchTerm}"`}</h2>
-            <div className="products-grid">
-              {filteredProducts.map(product => (
-                <div key={product.id} className="product-card">
-                  <h3>{product.name}</h3>
-                  <p className="product-description">{product.description}</p>
-                  <p className="product-price">${product.price}</p>
-                  <p className="product-category">{product.category}</p>
-                  <button onClick={() => addToCart(product)} className="add-to-cart-btn">
-                    Add to Cart
-                  </button>
-                  {user.role === 'admin' && (
-                    <button 
-                      onClick={() => deleteProduct(product.id)} 
-                      className="delete-product-btn"
-                    >
-                      Delete Product
-                    </button>
-                  )}
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* SHOPPING CART */}
-          <section className="cart-section">
-            <h2>Shopping Cart ({cart.length} items)</h2>
-            {cart.length === 0 ? (
-              <p>Your cart is empty</p>
-            ) : (
-              <div className="cart-items">
-                {cart.map(item => (
-                  <div key={item.id} className="cart-item">
-                    <div className="item-info">
-                      <h4>{item.name}</h4>
-                      <p>${item.price} each</p>
-                    </div>
-                    <div className="quantity-controls">
-                      <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
-                      <span>{item.quantity}</span>
-                      <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
-                    </div>
-                    <div className="item-total">
-                      ${(item.price * item.quantity).toFixed(2)}
-                    </div>
-                    <button 
-                      onClick={() => removeFromCart(item.id)} 
-                      className="remove-btn"
-                    >
-                      Remove
-                    </button>
+        
+          {activeSection === 'contact' ? (
+            <ContactUs />
+          ) : (
+            <>
+             
+              {user.role === 'admin' && (
+                <section className="admin-section">
+                  <h2>Admin - Add New Product</h2>
+                  <div className="add-product-form">
+                    <input
+                      type="text"
+                      placeholder="Product Name"
+                      value={newProduct.name}
+                      onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
+                    />
+                    <input
+                      type="number"
+                      placeholder="Price"
+                      value={newProduct.price}
+                      onChange={(e) => setNewProduct({...newProduct, price: e.target.value})}
+                    />
+                    <input
+                      type="text"
+                      placeholder="Description"
+                      value={newProduct.description}
+                      onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
+                    />
+                    <input
+                      type="text"
+                      placeholder="Category"
+                      value={newProduct.category}
+                      onChange={(e) => setNewProduct({...newProduct, category: e.target.value})}
+                    />
+                    <button onClick={addNewProduct}>Add Product</button>
                   </div>
-                ))}
-                <div className="cart-total">
-                  <strong>Total: ${getTotal().toFixed(2)}</strong>
+                </section>
+              )}
+
+              {/* SEARCH BAR */}
+              <section className="search_section">
+                <div className="search-container">
+                  <input
+                    type="text"
+                    placeholder="Search products by name, description, or category..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="search-input"
+                  />
+                  <div className="search-results-info">
+                    {searchTerm && (
+                      <p>
+                        Showing {filteredProducts.length} of {products.length} products
+                        {filteredProducts.length === 0 && ' - No products found'}
+                      </p>
+                    )}
+                  </div>
                 </div>
-                <button className="checkout-btn">Proceed to Checkout</button>
-              </div>
-            )}
-          </section>
+              </section>
+
+              {/* PRODUCTS SECTION */}
+              <section className="products-section">
+                <h2>Products {searchTerm && `- Search results for "${searchTerm}"`}</h2>
+                <div className="products-grid">
+                  {filteredProducts.map(product => (
+                    <div key={product.id} className="product-card">
+                      <h3>{product.name}</h3>
+                      <p className="product-description">{product.description}</p>
+                      <p className="product-price">${product.price}</p>
+                      <p className="product-category">{product.category}</p>
+                      <button onClick={() => addToCart(product)} className="add-to-cart-btn">
+                        Add to Cart
+                      </button>
+                      {user.role === 'admin' && (
+                        <button 
+                          onClick={() => deleteProduct(product.id)} 
+                          className="delete-product-btn"
+                        >
+                          Delete Product
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* SHOPPING CART */}
+              <section className="cart-section">
+                <h2>Shopping Cart ({cart.length} items)</h2>
+                {cart.length === 0 ? (
+                  <p>Your cart is empty</p>
+                ) : (
+                  <div className="cart-items">
+                    {cart.map(item => (
+                      <div key={item.id} className="cart-item">
+                        <div className="item-info">
+                          <h4>{item.name}</h4>
+                          <p>${item.price} each</p>
+                        </div>
+                        <div className="quantity-controls">
+                          <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
+                          <span>{item.quantity}</span>
+                          <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
+                        </div>
+                        <div className="item-total">
+                          ${(item.price * item.quantity).toFixed(2)}
+                        </div>
+                        <button 
+                          onClick={() => removeFromCart(item.id)} 
+                          className="remove-btn"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                    <div className="cart-total">
+                      <strong>Total: ${getTotal().toFixed(2)}</strong>
+                    </div>
+                    <button className="checkout-btn">Proceed to Checkout</button>
+                  </div>
+                )}
+              </section>
+            </>
+          )}
         </main>
       </div>
     </div>
