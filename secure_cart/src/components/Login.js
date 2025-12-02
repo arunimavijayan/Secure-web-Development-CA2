@@ -3,9 +3,9 @@ import '../Login.css';
 
 //Creating 3 users with Hardcoded credentials
 const user =[
-   { username: 'John', password: 'John123', role:'user'},
-   {username: 'Admin', password: 'admin123', role:'admin'},
-   {username: 'Arunima', password: 'arun123', role:'user'}
+   { username: 'john', password: 'john123', role:'user'},
+   {username: 'admin', password: 'admin123', role:'admin'},
+   {username: 'arunima', password: 'arun123', role:'user'}
 ];
 
 const Login=()=>{

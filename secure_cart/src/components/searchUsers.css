@@ -245,52 +245,6 @@
     color: #343a40;
 }
 
-.user-role {
-    text-transform: uppercase;
-    font-size: 12px;
-}
-
-.role-badge {
-    padding: 4px 12px;
-    border-radius: 15px;
-    font-weight: bold;
-}
-
-.role-badge.admin {
-    background: #dc3545;
-    color: white;
-}
-
-.role-badge.user {
-    background: #6c757d;
-    color: white;
-}
-
-.user-email {
-    color: #007bff;
-}
-
-.user-password, .user-creditcard {
-    font-family: monospace;
-}
-
-.password-exposed, .sensitive-data {
-    background: #fff5f5;
-    padding: 4px 8px;
-    border-radius: 4px;
-    color: orange;
-    border: 1px solid #f5c6cb;
-}
-
-.sensitive-data {
-    color: #856404;
-    background: #fff3cd;
-    border-color: #ffeaa7;
-}
-
-/* Remove old grid styles if they exist */
 .results-grid, .user-card {
     display: none;
 }
-/* Keep all other CSS from previous version */
-/* ... (quick-tests, sql-demo, results-section, etc.) ... */

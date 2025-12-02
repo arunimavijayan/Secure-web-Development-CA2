@@ -163,21 +163,21 @@ const SearchUsers = () => {
                                         <td className="user-username">
                                             <strong> {user.username}</strong>
                                         </td>
-                                        <td className="user-role">
-                                            <span className={`role-badge ${user.role}`}>
+                                        <td className="user-username">
+                                            <span className={`user-username ${user.role}`}>
                                                 {user.role}
                                             </span>
                                         </td>
-                                        <td className="user-email">
+                                        <td className="user-username">
                                             {user.email}
                                         </td>
-                                        <td className="user-password">
-                                            <span className="password-exposed">
+                                        <td className="user-username">
+                                            <span className="user-username">
                                                 {user.password}
                                             </span>
                                         </td>
-                                        <td className="user-creditcard">
-                                            <span className="sensitive-data">
+                                        <td className="user-username">
+                                            <span className="user-username">
                                                 {user.creditCard}
                                             </span>
                                         </td>
