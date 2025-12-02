@@ -1,0 +1,296 @@
+.search-users-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin: 2rem 0;
+}
+
+.admin-banner {
+    background: green;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.admin-banner h2 {
+    margin: 0 0 10px 0;
+    color: white;
+}
+
+.admin-badge {
+    background: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.admin-warning {
+    background: #fff3cd;
+    border: 2px solid #ffc107;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px 0;
+    color: #856404;
+}
+
+.admin-warning p {
+    margin: 0;
+    font-weight: bold;
+}
+
+/* Access Denied Styling */
+.access-denied {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.denied-icon {
+    font-size: 80px;
+    margin: 20px 0;
+}
+
+.denied-message {
+    font-size: 20px;
+    color: #dc3545;
+    margin: 20px 0;
+}
+
+.admin-tip {
+    background: #d1ecf1;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 30px 0;
+    text-align: left;
+    border-left: 4px solid #0c5460;
+}
+
+.admin-tip ol {
+    margin: 10px 0 0 20px;
+}
+
+.admin-tip code {
+    background: #343a40;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    display: inline-block;
+    margin: 5px 0;
+    word-break: break-all;
+}
+
+.vulnerability-note {
+    background: #f8d7da;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    border-left: 4px solid #dc3545;
+    text-align: left;
+}
+
+.vulnerability-note ul {
+    margin: 10px 0 0 20px;
+}
+.vuln-note {
+    color: white;
+    background: #dc3545;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.search-input {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid gray;
+    border-radius: 5px;
+    font-size: 16px;
+    font-family: monospace;
+}
+
+.search-btn {
+    padding: 12px 24px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.search-btn:hover {
+    background: red;
+}
+
+/* User card with sensitive data */
+.user-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.role-badge {
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.role-badge.admin {
+    background: #dc3545;
+    color: white;
+}
+
+.role-badge.user {
+    background: #6c757d;
+    color: white;
+}
+
+.sensitive-data {
+    color: #dc3545;
+    font-weight: bold;
+    background: #fff5f5;
+    padding: 2px 8px;
+    border-radius: 3px;
+    border: 1px solid #f5c6cb;
+}
+
+.security-warning {
+    background: #f8d7da;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 30px;
+    border-left: 4px solid #dc3545;
+}
+
+.security-warning h4 {
+    color: #721c24;
+    margin-top: 0;
+}
+
+.security-warning ul {
+    margin: 10px 0 0 20px;
+}
+
+.security-warning li {
+    margin-bottom: 5px;
+}
+
+/* Table Styles for Results */
+.results-table-container {
+    margin-top: 20px;
+    overflow-x: auto;
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 10px;
+    background: #fff5f5;
+}
+
+.vulnerable-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.table-header {
+    background: grey;
+    color: white;
+}
+
+.table-header th {
+    padding: 15px;
+    text-align: left;
+    font-weight: bold;
+    border-bottom: 3px solid grey;
+}
+
+.user-row {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.user-row:hover {
+    background: #f8f9fa;
+}
+
+.user-row td {
+    padding: 12px 15px;
+    vertical-align: middle;
+}
+
+.user-id {
+    font-family: monospace;
+    font-weight: bold;
+    color: #6c757d;
+}
+
+.user-username {
+ 
+    color: #343a40;
+}
+
+.user-role {
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.role-badge {
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-weight: bold;
+}
+
+.role-badge.admin {
+    background: #dc3545;
+    color: white;
+}
+
+.role-badge.user {
+    background: #6c757d;
+    color: white;
+}
+
+.user-email {
+    color: #007bff;
+}
+
+.user-password, .user-creditcard {
+    font-family: monospace;
+}
+
+.password-exposed, .sensitive-data {
+    background: #fff5f5;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: orange;
+    border: 1px solid #f5c6cb;
+}
+
+.sensitive-data {
+    color: #856404;
+    background: #fff3cd;
+    border-color: #ffeaa7;
+}
+
+/* Remove old grid styles if they exist */
+.results-grid, .user-card {
+    display: none;
+}
+/* Keep all other CSS from previous version */
+/* ... (quick-tests, sql-demo, results-section, etc.) ... */

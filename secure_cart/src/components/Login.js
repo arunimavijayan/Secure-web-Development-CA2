@@ -21,7 +21,6 @@ const handleLogin= (e) => {
 
     if (user_value){
         localStorage.setItem('user', JSON.stringify(user_value));
-        alert(`welcome to Arunima's Secure_cart ${user_value.username}!`);
         window.location.href = '/shopping_cart';
     }
     else{

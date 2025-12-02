@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './ShoppingCart.css';
 
 import ContactUs from './contactUs';
+import SearchUsers from './searchUsers';
 
 // No backend API - all data stored in frontend
 const initialProducts = [
@@ -147,6 +148,7 @@ const ShoppingCart = () => {
             <div className="nav-section">
               
               <ul>
+                <li onClick={() => setActiveSection('sql')}>Admin Tools</li>
                 <li onClick={() => setActiveSection('products')}>Home</li>
                 <li onClick={() => setActiveSection('contact')}>Contact us</li>
                 
@@ -165,7 +167,9 @@ const ShoppingCart = () => {
         
           {activeSection === 'contact' ? (
             <ContactUs />
-          ) : (
+          ) :  activeSection === 'sql' ? (
+    <SearchUsers/>
+):(
             <>
              
               {user.role === 'admin' && (
