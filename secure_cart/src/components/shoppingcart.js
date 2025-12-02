@@ -142,20 +142,14 @@ const ShoppingCart = () => {
         {/* SIDEBAR */}
         <aside className="sidebar">
           <nav className="sidebar-nav">
-            <div className="nav-section">
-              <h3>Account</h3>
-              <ul>
-                <li>Profile</li>
-                <li>Shopping cart info</li>
-              </ul>
-            </div>
+           
             
             <div className="nav-section">
-              <h3>Support</h3>
+              
               <ul>
+                <li onClick={() => setActiveSection('products')}>Home</li>
                 <li onClick={() => setActiveSection('contact')}>Contact us</li>
-                <li>Address</li>
-                <li>Offers</li>
+                
               </ul>
             </div>
             
@@ -167,6 +161,7 @@ const ShoppingCart = () => {
 
 
         <main className="main-content">
+        
         
           {activeSection === 'contact' ? (
             <ContactUs />
