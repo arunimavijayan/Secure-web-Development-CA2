@@ -10,7 +10,7 @@ const ContactUs = () => {
     
     const [submissionResult, setSubmissionResult] = useState(null);
 
-    // VULNERABLE: No input sanitization
+    // No input sanitization
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -19,10 +19,9 @@ const ContactUs = () => {
         }));
     };
 
-    // VULNERABLE: Directly using user input without sanitization
+    //Directly using user input without sanitization
     const handleSubmit = (e) => {
-        e.preventDefault();
-        
+        e.preventDefault();      
         // Basic validation
         if (!formData.name || !formData.email || !formData.description) {
             setSubmissionResult({
@@ -42,8 +41,7 @@ const ContactUs = () => {
             return;
         }
 
-        // Process form submission
-        // VULNERABILITY: Directly inserting user input into JSX without sanitization
+        //Directly inserting user input into JSX without sanitization
         setSubmissionResult({
             type: 'success',
             message: `
@@ -55,7 +53,6 @@ const ContactUs = () => {
             `
         });
 
-        // Clear form
         setFormData({
             name: '',
             email: '',
@@ -65,8 +62,7 @@ const ContactUs = () => {
 
     return (
         <div className="contact-us-section">
-            <h2>Contact Us</h2>
-            
+            <h2>Contact Us</h2>          
             <div className="contact-form-container">
                 <form onSubmit={handleSubmit} className="contact-form">
                     <div className="form-group">
@@ -81,8 +77,7 @@ const ContactUs = () => {
                             onChange={handleInputChange}
                             required 
                         />
-                    </div>
-                    
+                    </div>                   
                     <div className="form-group">
                         <label htmlFor="email" className="form-label">Email Id</label>
                         <input 
@@ -95,8 +90,7 @@ const ContactUs = () => {
                             onChange={handleInputChange}
                             required 
                         />
-                    </div>
-                    
+                    </div>                   
                     <div className="form-group">
                         <label htmlFor="description" className="form-label">Description</label>
                         <textarea 
@@ -118,7 +112,7 @@ const ContactUs = () => {
                 {submissionResult && (
                     <div 
                         className={`submission-result ${submissionResult.type}`}
-                        // VULNERABILITY: Using dangerouslySetInnerHTML without sanitization
+                        //Using dangerouslySetInnerHTML without sanitization
                         dangerouslySetInnerHTML={{ __html: submissionResult.message }}
                     />
                 )}

@@ -9,7 +9,6 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          // adding the route paths
           <Route path="/" element={<Login/>}/>
           <Route path="/shopping_cart" element={<ShoppingCart/>}/>
         </Routes>

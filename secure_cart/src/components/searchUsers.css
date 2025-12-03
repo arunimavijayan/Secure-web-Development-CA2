@@ -42,7 +42,6 @@
     font-weight: bold;
 }
 
-/* Access Denied Styling */
 .access-denied {
     text-align: center;
     padding: 40px 20px;
@@ -135,7 +134,6 @@
     background: red;
 }
 
-/* User card with sensitive data */
 .user-header {
     display: flex;
     justify-content: space-between;
@@ -191,7 +189,6 @@
     margin-bottom: 5px;
 }
 
-/* Table Styles for Results */
 .results-table-container {
     margin-top: 20px;
     overflow-x: auto;

@@ -7,15 +7,12 @@ const SearchUsers = () => {
     const [sqlQuery, setSqlQuery] = useState('');
     const [user, setUser] = useState({});
     const [isAdmin, setIsAdmin] = useState(false);
-    
-    // Check if user is admin on component mount
+
     useEffect(() => {
         const userData = JSON.parse(localStorage.getItem('user') || '{}');
         setUser(userData);
         setIsAdmin(userData.role === 'admin');
     }, []);
-
-    // Simulated database (like a real SQL database)
     const fakeUsersDB = [
         { id: 1, username: 'John', email: 'john@securecart.com', password: 'John123', role: 'user', creditCard: '1234-5678-9012-3456' },
         { id: 2, username: 'Admin', email: 'admin@securecart.com', password: 'admin123', role: 'admin', creditCard: '1111-2222-3333-4444' },
@@ -24,18 +21,15 @@ const SearchUsers = () => {
         { id: 5, username: 'Bob', email: 'bob@securecart.com', password: 'bob123', role: 'user', creditCard: '3333-4444-5555-6666' }
     ];
 
-    // VULNERABLE SQL PARSER (simulates backend SQL execution)
     const executeVulnerableSQL = (query) => {
         console.log('Executing SQL:', query);
-        
-        // Extract the WHERE condition from SQL
         const whereMatch = query.match(/WHERE\s+(.+)/i);
         if (!whereMatch) return fakeUsersDB;
         
         const whereClause = whereMatch[1];
         
         try {
-            // Convert SQL condition to JavaScript
+
             let jsCondition = whereClause
                 .replace(/username\s*=/i, 'user.username ===')
                 .replace(/email\s*=/i, 'user.email ===')
@@ -45,20 +39,17 @@ const SearchUsers = () => {
                 .replace(/'1'='2'/g, 'false')
                 .replace(/1=1/g, 'true')
                 .replace(/1=2/g, 'false');
-            
-            // Handle OR conditions
+
             if (jsCondition.includes('OR')) {
                 jsCondition = jsCondition.replace(/OR/gi, '||');
             }
-            
-            // Handle AND conditions  
+  
             if (jsCondition.includes('AND')) {
                 jsCondition = jsCondition.replace(/AND/gi, '&&');
             }
             
             console.log('Converted to JS:', jsCondition);
             
-            // Filter users based on condition
             return fakeUsersDB.filter(user => {
                 try {
                     return eval(jsCondition);
@@ -80,18 +71,15 @@ const SearchUsers = () => {
             return;
         }
 
-        // Build vulnerable SQL query
         const vulnerableSQL = `SELECT * FROM users WHERE username = '${searchQuery}'`;
         setSqlQuery(vulnerableSQL);
-        
-        // Execute the vulnerable query
+
         const filteredResults = executeVulnerableSQL(vulnerableSQL);
         setResults(filteredResults);
         
         
     };
 
-    // If not admin, show access denied message
     if (!isAdmin) {
         return (
             <div className="search-users-section">
@@ -103,10 +91,7 @@ const SearchUsers = () => {
                     </p>
                     <p>Current user: <strong>{user.username || 'Not logged in'}</strong></p>
                     <p>Role: <strong>{user.role || 'No role assigned'}</strong></p>
-                    
-                    
-                    
-                    
+    
                 </div>
             </div>
         );

@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import '../Login.css';
 
-//Creating 3 users with Hardcoded credentials
 const user =[
    { username: 'john', password: 'john123', role:'user'},
    {username: 'admin', password: 'admin123', role:'admin'},
@@ -16,7 +15,6 @@ const Login=()=>{
 
 const handleLogin= (e) => {
     e.preventDefault();
-    //Client-side authentication done
     const user_value= user.find(u => u.username === username && u.password === password);
 
     if (user_value){

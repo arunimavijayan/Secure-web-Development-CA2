@@ -3,8 +3,6 @@ import './ShoppingCart.css';
 
 import ContactUs from './contactUs';
 import SearchUsers from './searchUsers';
-
-// No backend API - all data stored in frontend
 const initialProducts = [
   { id: 1, name: 'Laptop', price: 700, description: 'High-performance laptop', category: 'Electronics' },
   { id: 2, name: 'Smartphone', price: 100, description: 'Latest smartphone', category: 'Electronics' },
@@ -14,7 +12,6 @@ const initialProducts = [
 ];
 
 const ShoppingCart = () => {
-  // STATE MANAGEMENT
   const [user, setUser] = useState({});
   const [products, setProducts] = useState(initialProducts);
   const [cart, setCart] = useState([]);
@@ -26,21 +23,17 @@ const ShoppingCart = () => {
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem('user') || '{}');
     setUser(userData);
-    
-    // VULNERABILITY: No session expiration check
+    // No session expiration check
     if (!userData.username) {
       window.location.href = '/';
     }
   }, []);
-
-  // CRUD OPERATIONS WITH INTENTIONAL VULNERABILITIES
-
-  // CREATE - Add to cart
+ 
   const addToCart = (product) => {
-    // VULNERABILITY: No input validation
+    //No input validation
     const existingItem = cart.find(item => item.id === product.id);
     if (existingItem) {
-      // VULNERABILITY: Client-side quantity manipulation possible
+      //Client-side quantity manipulation possible
       setCart(cart.map(item => 
         item.id === product.id 
           ? { ...item, quantity: item.quantity + 1 }
@@ -51,12 +44,8 @@ const ShoppingCart = () => {
     }
     alert(`${product.name} added to cart!`);
   };
-
-  // READ - Display products (already happening in render)
-
-  // UPDATE - Update cart quantity
   const updateQuantity = (productId, newQuantity) => {
-    // VULNERABILITY: No validation - negative quantities allowed
+    //No validation - negative quantities allowed
     if (newQuantity <= 0) {
       removeFromCart(productId);
     } else {
@@ -66,18 +55,17 @@ const ShoppingCart = () => {
     }
   };
 
-  // DELETE - Remove from cart
   const removeFromCart = (productId) => {
-    // VULNERABILITY: No confirmation or server-side validation
+    //No confirmation or server-side validation
     setCart(cart.filter(item => item.id !== productId));
   };
 
-  // ADMIN FUNCTIONS - CREATE new product
+  // ADMIN FUNCTIONS
   const addNewProduct = () => {
-    // VULNERABILITY: No authentication check for admin functions
-    // VULNERABILITY: No input sanitization
+    //No authentication check for admin functions
+    // No input sanitization
     const product = {
-      id: Date.now(), // VULNERABILITY: Predictable ID generation
+      id: Date.now(), //Predictable ID generation
       name: newProduct.name,
       price: parseFloat(newProduct.price),
       description: newProduct.description,
@@ -89,20 +77,16 @@ const ShoppingCart = () => {
     alert('Product added successfully!');
   };
 
-  // ADMIN FUNCTIONS - DELETE product
   const deleteProduct = (productId) => {
-    // VULNERABILITY: No authorization check
+    //No authorization check
     setProducts(products.filter(product => product.id !== productId));
-    // Also remove from cart if present
     setCart(cart.filter(item => item.id !== productId));
   };
 
-  // Calculate total
   const getTotal = () => {
     return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
   };
-
-  // SEARCH FUNCTIONALITY
+  //Search
   const filteredProducts = products.filter(product => {
     const searchLower = searchTerm.toLowerCase();
     return (
@@ -113,14 +97,13 @@ const ShoppingCart = () => {
   });
 
   const logout = () => {
-    // VULNERABILITY: Insecure logout - just removes from localStorage
+    //Insecure logout - just removes from localStorage
     localStorage.removeItem('user');
     window.location.href = '/';
   };
 
   return (
     <div className="shoppingcart_container">
-      {/* HEADER */}
       <header className="app_header">
         <div className="logo-section">
           <img 
@@ -140,7 +123,6 @@ const ShoppingCart = () => {
       </header>
 
       <div className="main-layout">
-        {/* SIDEBAR */}
         <aside className="sidebar">
           <nav className="sidebar-nav">
            
@@ -168,10 +150,9 @@ const ShoppingCart = () => {
           {activeSection === 'contact' ? (
             <ContactUs />
           ) :  activeSection === 'sql' ? (
-    <SearchUsers/>
-):(
-            <>
-             
+            <SearchUsers/>
+          ):(
+            <>            
               {user.role === 'admin' && (
                 <section className="admin-section">
                   <h2>Admin - Add New Product</h2>
@@ -204,8 +185,6 @@ const ShoppingCart = () => {
                   </div>
                 </section>
               )}
-
-              {/* SEARCH BAR */}
               <section className="search_section">
                 <div className="search-container">
                   <input
@@ -226,7 +205,6 @@ const ShoppingCart = () => {
                 </div>
               </section>
 
-              {/* PRODUCTS SECTION */}
               <section className="products-section">
                 <h2>Products {searchTerm && `- Search results for "${searchTerm}"`}</h2>
                 <div className="products-grid">
@@ -242,8 +220,7 @@ const ShoppingCart = () => {
                       {user.role === 'admin' && (
                         <button 
                           onClick={() => deleteProduct(product.id)} 
-                          className="delete-product-btn"
-                        >
+                          className="delete-product-btn">
                           Delete Product
                         </button>
                       )}
@@ -252,7 +229,6 @@ const ShoppingCart = () => {
                 </div>
               </section>
 
-              {/* SHOPPING CART */}
               <section className="cart-section">
                 <h2>Shopping Cart ({cart.length} items)</h2>
                 {cart.length === 0 ? (
@@ -275,8 +251,7 @@ const ShoppingCart = () => {
                         </div>
                         <button 
                           onClick={() => removeFromCart(item.id)} 
-                          className="remove-btn"
-                        >
+                          className="remove-btn">
                           Remove
                         </button>
                       </div>

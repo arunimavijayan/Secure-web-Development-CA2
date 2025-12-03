@@ -10,8 +10,6 @@
   filter: blur(20px) brightness(0.9);
   z-index: 1;
 }
-
-/* FIXED: Logo section with horizontal alignment */
 .logo-section {
   display: flex;
   align-items: center;
@@ -31,7 +29,6 @@
   flex-shrink: 0; /* Prevents logo from shrinking */
 }
 
-/* FIXED: Brand name styling for horizontal layout */
 .brand_name {
   display: flex;
   flex-direction: column;
@@ -48,7 +45,6 @@
   line-height: 1.2;
 }
 
-/* Remove the old login_section styles since we're using logo-section */
 .login_section{
   display: flex;
   align-items: center;
