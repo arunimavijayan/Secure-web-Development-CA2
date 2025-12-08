@@ -1,25 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import './ShoppingCart.css';
-
 import ContactUs from './contactUs';
 import SearchUsers from './searchUsers';
-const initialProducts = [
-  { id: 1, name: 'Laptop', price: 700, description: 'High-performance laptop', category: 'Electronics' },
-  { id: 2, name: 'Smartphone', price: 100, description: 'Latest smartphone', category: 'Electronics' },
-  { id: 3, name: 'Headphones', price: 80, description: 'Noise-cancelling headphones', category: 'Electronics' },
-  { id: 4, name: 'Book', price: 25, description: 'Bestselling novel', category: 'Books' },
-  { id: 5, name: 'Coffee Mug', price: 3, description: 'Ceramic coffee mug', category: 'Home' }
-];
+import { getProducts, addProduct } from '../services/api';
 
 const ShoppingCart = () => {
   const [user, setUser] = useState({});
-  const [products, setProducts] = useState(initialProducts);
+  const [products, setProducts] = useState([]); // Start empty
   const [cart, setCart] = useState([]);
   const [newProduct, setNewProduct] = useState({ name: '', price: '', description: '', category: '' });
-  const [searchTerm, setSearchTerm] = useState(''); // Search state
+  const [searchTerm, setSearchTerm] = useState('');
   const [activeSection, setActiveSection] = useState('products');
   
-  //  No server-side authentication check
+  //No server-side authentication check
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem('user') || '{}');
     setUser(userData);
@@ -27,15 +20,28 @@ const ShoppingCart = () => {
     if (!userData.username) {
       window.location.href = '/';
     }
+    
+    // Load products from backend
+    const loadProducts = async () => {
+      try {
+        const productsFromAPI = await getProducts();
+        setProducts(productsFromAPI);
+      } catch (error) {
+        console.error('Failed to load products');
+        setProducts([]);
+      }
+    };
+    
+    loadProducts();
   }, []);
  
   const addToCart = (product) => {
     //No input validation
-    const existingItem = cart.find(item => item.id === product.id);
+    const existingItem = cart.find(item => item.id === product.id || item._id === product._id);
     if (existingItem) {
       //Client-side quantity manipulation possible
       setCart(cart.map(item => 
-        item.id === product.id 
+        (item.id === product.id || item._id === product._id)
           ? { ...item, quantity: item.quantity + 1 }
           : item
       ));
@@ -44,48 +50,62 @@ const ShoppingCart = () => {
     }
     alert(`${product.name} added to cart!`);
   };
+  
   const updateQuantity = (productId, newQuantity) => {
     //No validation - negative quantities allowed
     if (newQuantity <= 0) {
       removeFromCart(productId);
     } else {
       setCart(cart.map(item =>
-        item.id === productId ? { ...item, quantity: newQuantity } : item
+        (item.id === productId || item._id === productId) ? { ...item, quantity: newQuantity } : item
       ));
     }
   };
 
   const removeFromCart = (productId) => {
     //No confirmation or server-side validation
-    setCart(cart.filter(item => item.id !== productId));
+    setCart(cart.filter(item => item.id !== productId && item._id !== productId));
   };
 
   // ADMIN FUNCTIONS
-  const addNewProduct = () => {
+  const addNewProduct = async () => {
     //No authentication check for admin functions
     // No input sanitization
-    const product = {
-      id: Date.now(), //Predictable ID generation
-      name: newProduct.name,
-      price: parseFloat(newProduct.price),
-      description: newProduct.description,
-      category: newProduct.category
-    };
-    
-    setProducts([...products, product]);
-    setNewProduct({ name: '', price: '', description: '', category: '' });
-    alert('Product added successfully!');
+    try {
+      const product = {
+        name: newProduct.name,
+        price: parseFloat(newProduct.price),
+        description: newProduct.description,
+        category: newProduct.category
+      };
+      
+      const newProductFromAPI = await addProduct(product);
+      setProducts([...products, newProductFromAPI]);
+      setNewProduct({ name: '', price: '', description: '', category: '' });
+      alert('Product added successfully!');
+    } catch (error) {
+      alert('Failed to add product');
+    }
   };
 
-  const deleteProduct = (productId) => {
+  const deleteProduct = async (productId) => {
     //No authorization check
-    setProducts(products.filter(product => product.id !== productId));
-    setCart(cart.filter(item => item.id !== productId));
+    try {
+      await fetch(`http://localhost:5000/api/products/${productId}`, {
+        method: 'DELETE'
+      });
+    } catch (error) {
+      console.log('Backend delete failed, deleting locally');
+    }
+
+    setProducts(products.filter(product => product._id !== productId && product.id !== productId));
+    setCart(cart.filter(item => item.id !== productId && item._id !== productId));
   };
 
   const getTotal = () => {
     return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
   };
+  
   //Search
   const filteredProducts = products.filter(product => {
     const searchLower = searchTerm.toLowerCase();
@@ -209,7 +229,7 @@ const ShoppingCart = () => {
                 <h2>Products {searchTerm && `- Search results for "${searchTerm}"`}</h2>
                 <div className="products-grid">
                   {filteredProducts.map(product => (
-                    <div key={product.id} className="product-card">
+                    <div key={product._id || product.id} className="product-card">
                       <h3>{product.name}</h3>
                       <p className="product-description">{product.description}</p>
                       <p className="product-price">${product.price}</p>
@@ -219,7 +239,7 @@ const ShoppingCart = () => {
                       </button>
                       {user.role === 'admin' && (
                         <button 
-                          onClick={() => deleteProduct(product.id)} 
+                          onClick={() => deleteProduct(product._id || product.id)} 
                           className="delete-product-btn">
                           Delete Product
                         </button>
@@ -236,21 +256,21 @@ const ShoppingCart = () => {
                 ) : (
                   <div className="cart-items">
                     {cart.map(item => (
-                      <div key={item.id} className="cart-item">
+                      <div key={item._id || item.id} className="cart-item">
                         <div className="item-info">
                           <h4>{item.name}</h4>
                           <p>${item.price} each</p>
                         </div>
                         <div className="quantity-controls">
-                          <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
+                          <button onClick={() => updateQuantity(item._id || item.id, item.quantity - 1)}>-</button>
                           <span>{item.quantity}</span>
-                          <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
+                          <button onClick={() => updateQuantity(item._id || item.id, item.quantity + 1)}>+</button>
                         </div>
                         <div className="item-total">
                           ${(item.price * item.quantity).toFixed(2)}
                         </div>
                         <button 
-                          onClick={() => removeFromCart(item.id)} 
+                          onClick={() => removeFromCart(item._id || item.id)} 
                           className="remove-btn">
                           Remove
                         </button>

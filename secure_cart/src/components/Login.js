@@ -1,31 +1,34 @@
 import React, {useState} from 'react';
 import '../Login.css';
+import { login } from '../services/api';
 
-const user =[
-   { username: 'john', password: 'john123', role:'user'},
-   {username: 'admin', password: 'admin123', role:'admin'},
-   {username: 'arunima', password: 'arun123', role:'user'}
-];
-
-const Login=()=>{
+const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
+    const handleLogin = async (e) => {
+        e.preventDefault();
 
-const handleLogin= (e) => {
-    e.preventDefault();
-    const user_value= user.find(u => u.username === username && u.password === password);
+        try {
+            console.log('Logging in via backend...');
+            const result = await login(username, password);
+            
+            if (result.message === 'Login successful') {
+                localStorage.setItem('user', JSON.stringify({
+                    username: result.username,
+                    role: result.role
+                }));
+                window.location.href = '/shopping_cart';
+            } else {
+                setError(result.error || 'Invalid credentials! Please enter correct Username and Password');
+            }
+        } catch (err) {
+            console.error('Login error:', err);
+            setError('Login failed. Please check your credentials and try again.');
+        }
+    };
 
-    if (user_value){
-        localStorage.setItem('user', JSON.stringify(user_value));
-        window.location.href = '/shopping_cart';
-    }
-    else{
-        setError('Invalid credentials! Please enter correct Username and Password')
-    }
-
-}
 return (
     <div className="login_bg">
       <div className="login_container">
