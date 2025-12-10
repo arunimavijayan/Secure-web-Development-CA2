@@ -30,3 +30,6 @@ backend/dist/
 
 # IDE
 .vscode/
+
+#Mitigation steps
+.env

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');//secure import
 
 // Connect to MongoDB 8.2
 mongoose.connect('mongodb://localhost:27017/securecart', {
@@ -29,19 +30,70 @@ async function seed() {
         await User.deleteMany({});
         await Product.deleteMany({});
         
-        console.log('Seeding database with vulnerable data...');
+        // console.log('Seeding database with vulnerable data...');
         
-        // Create users with plain text passwords and sensitive data
+        // // Create users with plain text passwords and sensitive data
+        // await User.create([
+        //     { username: 'john', password: 'john123', role: 'user', email: 'john@securecart.com', creditCard: '4111-1111-1111-1111' },
+        //     { username: 'admin', password: 'admin123', role: 'admin', email: 'admin@securecart.com', creditCard: '4222-2222-2222-2222' },
+        //     { username: 'arunima', password: 'arun123', role: 'user', email: 'arunima@securecart.com', creditCard: '4333-3333-3333-3333' },
+        //     { username: 'alice', password: 'alice123', role: 'user', email: 'alice@securecart.com', creditCard: '4444-4444-4444-4444' },
+        //     { username: 'bob', password: 'bob123', role: 'user', email: 'bob@securecart.com', creditCard: '4555-5555-5555-5555' }
+        // ]);
+        
+        // console.log(' Created 5 users with plain text passwords and credit card data');
+        console.log('Seeding database with SECURE data...');
+
+        // Hashing passwords
+        const saltRounds = 10;
+        const hashedPasswordJohn = await bcrypt.hash('john123', saltRounds);
+        const hashedPasswordAdmin = await bcrypt.hash('admin123', saltRounds);
+        const hashedPasswordArunima = await bcrypt.hash('arun123', saltRounds);
+        const hashedPasswordAlice = await bcrypt.hash('alice123', saltRounds);
+        const hashedPasswordBob = await bcrypt.hash('bob123', saltRounds);
+
+        // Create users with HASHED passwords and masked cc
         await User.create([
-            { username: 'john', password: 'john123', role: 'user', email: 'john@securecart.com', creditCard: '4111-1111-1111-1111' },
-            { username: 'admin', password: 'admin123', role: 'admin', email: 'admin@securecart.com', creditCard: '4222-2222-2222-2222' },
-            { username: 'arunima', password: 'arun123', role: 'user', email: 'arunima@securecart.com', creditCard: '4333-3333-3333-3333' },
-            { username: 'alice', password: 'alice123', role: 'user', email: 'alice@securecart.com', creditCard: '4444-4444-4444-4444' },
-            { username: 'bob', password: 'bob123', role: 'user', email: 'bob@securecart.com', creditCard: '4555-5555-5555-5555' }
+            { 
+                username: 'john', 
+                password: hashedPasswordJohn, 
+                role: 'user', 
+                email: 'john@securecart.com', 
+                creditCard: 'xxxx-xxxx-xxxx-1111' 
+            },
+            { 
+                username: 'admin', 
+                password: hashedPasswordAdmin, 
+                role: 'admin', 
+                email: 'admin@securecart.com', 
+                creditCard: 'xxxx-xxxx-xxxx-2222' 
+            },
+            { 
+                username: 'arunima', 
+                password: hashedPasswordArunima, 
+                role: 'user', 
+                email: 'arunima@securecart.com', 
+                creditCard: 'xxxx-xxxx-xxxx-3333' 
+            },
+            { 
+                username: 'alice', 
+                password: hashedPasswordAlice, 
+                role: 'user', 
+                email: 'alice@securecart.com', 
+                creditCard: 'xxxx-xxxx-xxxx-4444' 
+            },
+            { 
+                username: 'bob', 
+                password: hashedPasswordBob, 
+                role: 'user', 
+                email: 'bob@securecart.com', 
+                creditCard: 'xxxx-xxxx-xxxx-5555' 
+            }
         ]);
         
-        console.log(' Created 5 users with plain text passwords and credit card data');
-        
+        console.log(' Created 5 users with HASHED passwords and masked sensitive data');
+
+
         // Create products
         await Product.create([
             { name: 'Laptop', price: 700, description: 'High-performance laptop', category: 'Electronics' },

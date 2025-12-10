@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import '../Login.css';
 import { login } from '../services/api';
 
-const Login = () => {
+const Login = ({ onLoginSuccess}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -14,12 +14,20 @@ const Login = () => {
             console.log('Logging in via backend...');
             const result = await login(username, password);
             
+            // if (result.message === 'Login successful') {
+            //     localStorage.setItem('user', JSON.stringify({
+            //         username: result.username,
+            //         role: result.role
+            //     }));
+            //     window.location.href = '/shopping_cart';
+            // } else {
             if (result.message === 'Login successful') {
-                localStorage.setItem('user', JSON.stringify({
+                // FIX 2: Call the prop function to update global state
+                onLoginSuccess({
                     username: result.username,
                     role: result.role
-                }));
-                window.location.href = '/shopping_cart';
+                });
+                // The redirect is now handled by the Navigate in App.js
             } else {
                 setError(result.error || 'Invalid credentials! Please enter correct Username and Password');
             }
