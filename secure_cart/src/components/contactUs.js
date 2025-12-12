@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+
 import './contactUs.css';
 
 const ContactUs = () => {
@@ -43,7 +43,7 @@ const ContactUs = () => {
 
     // In contactUs.js
 
-// 1. Helper function to escape HTML entities
+// to escape HTML entities
 const escapeHTML = (str) => {
     return str.replace(/&/g, '&amp;')
               .replace(/</g, '&lt;')
@@ -51,8 +51,6 @@ const escapeHTML = (str) => {
               .replace(/"/g, '&quot;')
               .replace(/'/g, '&#39;');
 };
-
-// ... other code ...
 
 // Secure handling of user input
 const handleSubmit = (e) => {

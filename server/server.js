@@ -14,7 +14,7 @@ const app = express();
 // Mitigation  Login Rate Limiting
 const loginLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, 
-    max: 5, // Max 5 login attempts per IP per window
+    max: 5, // Max 5 login attempts 
     message: 'Locked!!, please try again after 15 minutes',
     standardHeaders: true,
     legacyHeaders: false,
@@ -243,10 +243,8 @@ app.post('/api/login', loginLimiter, async (req, res) => {
 // });
 
 //Mitigation to search users api
-// Helper function to safely escape regex metacharacters
+// function to safely escape regex
 const escapeRegExp = (string) => {
-    // $& means the whole matched string. This replaces all special regex characters 
-    // with their escaped literal form (e.g., '.' becomes '\.').
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); 
 };
 
@@ -293,21 +291,11 @@ app.get('/api/products', async (req, res) => {
 //     res.json(product);
 // });
 const sanitize = require('sanitize-html');
-// Helper function to safely escape HTML entities
-const escapeHTML = (str) => {
-    if (typeof str !== 'string') return str;
-    return str.replace(/&/g, '&amp;')
-              .replace(/</g, '&lt;')
-              .replace(/>/g, '&gt;')
-              .replace(/"/g, '&quot;')
-              .replace(/'/g, '&#39;');
-};
 
 app.post('/api/products', authenticateToken, async (req, res) => {
-    // FIX: Declare variables as 'let' so they can be reassigned after sanitization
     let { name, price, description, category } = req.body;
     
-    // Server-Side Sanitization Fix (Crucial for Stored XSS)
+    // Server-Side Sanitization 
     name = sanitize(name, { allowedTags: [], allowedAttributes: {} });
     description = sanitize(description, { allowedTags: [], allowedAttributes: {} });
     category = sanitize(category, { allowedTags: [], allowedAttributes: {} });
@@ -333,9 +321,9 @@ app.post('/api/products', authenticateToken, async (req, res) => {
 
 // New Endpoint to check authentication status and retrieve user data
 app.get('/api/current-user', (req, res) => {
-    // req.user is set by the authenticateToken middleware based on the JWT in the cookie
+
     if (req.user) {
-        // Success: Token is valid. Return only non-sensitive data.
+
         return res.json({ 
             username: req.user.username,
             role: req.user.role 

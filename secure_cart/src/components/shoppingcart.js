@@ -313,10 +313,10 @@
 
 // export default ShoppingCart;
 
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import './ShoppingCart.css';
-import ContactUs from './contactUs';
-import SearchUsers from './searchUsers';
+// import ContactUs from './contactUs';
+// import SearchUsers from './searchUsers';
 import { getProducts, addProduct, deleteProduct as deleteProductApi } from '../services/api'; 
 
 // Helper function to safely escape HTML entities
@@ -525,7 +525,7 @@ const ShoppingCart = ({ user, logoutUser }) => {
                     ) : activeSection === 'sql' ? (
                         <SearchUsers user={user} /> 
                     ) : (
-                        <>            
+                        <> 
                             {user.role === 'admin' && (
                                 <section className="admin-section">
                                     <h2>Admin - Add New Product</h2>
