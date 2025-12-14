@@ -3,11 +3,6 @@ Arunima's Secure cart -  Secure web developement CA2 project
 ## Overview
 This is a MERN-stack (MongoDB, Express.js, React, Node.js) online shopping website which is made intentionally vulnerable as per the OPTION B of the Secure web developement project requirement. This also showcases the mitigation steps applied to mitigate the shown vulnerabilities.This uses SecDevOps web development methodology.
 
-Student: Arunima Geetha Vijayan
-Student Id: 24197963
-course : MSCCYB1_A - Secure Web Development  
-Institution: National College of Ireland
-
 ## Video Presentation link: 
 https://youtu.be/s7370jI-aIU 
 
