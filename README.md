@@ -1,70 +1,78 @@
-# Getting Started with Create React App
+Arunima's Secure cart -  Secure web developement CA2 project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
+This is a MERN-stack (MongoDB, Express.js, React, Node.js) online shopping website which is made intentionally vulnerable as per the OPTION B of the Secure web developement project requirement. This also showcases the mitigation steps applied to mitigate the shown vulnerabilities.This uses SecDevOps web development methodology.
 
-## Available Scripts
+Student: Arunima Geetha Vijayan
+Student Id: 24197963
+course : MSCCYB1_A - Secure Web Development  
+Institution: National College of Ireland
 
-In the project directory, you can run:
+## Video Presentation link: 
+https://youtu.be/s7370jI-aIU 
 
-### `npm start`
+Objectives:
+- To show real-world vulnerabilities in a functional web application.
+- To provide security mitigation steps to deploy a secure web application
+- Use SecDevOps methodology to consider security from the start of development lifecycle
+- Support CRUD operation , more than 3 users with different roles.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Main Security Focus:
+The project showacses 3+ Owasp top 10 vulnerabilities to simulate real world attacks, it helps to address critical vulnerability such as NoSQL injection, broken access control, input validation, authentication bypass and assist in transitioning this vulnerable state to a secure application state.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Features and Security Objectives:
 
-### `npm test`
+Core Functionalities:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1 User Authentication System
+-Login/Logout functionality with role-based access
+-Session management with token-based authentication
 
-### `npm run build`
+2 Product Management
+-Browse products with search and filtering
+-Shopping cart with quantity management
+-Admin product CRUD operations (add/edit/delete)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3 Admin Dashboard
+-User search and management interface
+-Administrative controls accessible only to admin users
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4 Contact System
+-Contact form for user inquiries
+-Input handling with security considerations
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Security  Improvements :
 
-### `npm run eject`
+<img width="846" height="716" alt="image" src="https://github.com/user-attachments/assets/2944bff5-0f13-43cc-a669-e8d3e4b2baaa" />
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+<img width="1022" height="268" alt="image" src="https://github.com/user-attachments/assets/594314a3-0a62-42d8-abbd-9df95643cd3a" />
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Project Structure :
+Secure-web-Development-CA2/
+│
+├── client/                          # React Frontend Application
+│   ├── public/                      # Static assets
+│   └── src/
+│       ├── components/              # React components
+│       │   ├── Login.js            # Authentication interface
+│       │   ├── ShoppingCart.js     # Main shopping interface
+│       │   ├── SearchUsers.js      # Admin user search (secured)
+│       │   ├── ContactUs.js        # Contact form with XSS protection
+│       │   └── ProtectedRoute.js   # Route protection middleware
+│       ├── services/
+│       │   └── api.js              # API service with secure configuration
+│       ├── styles/                  # CSS stylesheets
+│       └── App.js                   # Main application component
+│
+├── server/                          # Node.js Backend Application
+│   ├── server.js                    # Main server with security middleware
+│   ├── seed.js                      # Database seeding with bcrypt hashing
+│   └── package.json                # Backend dependencies
+│
+├── .eslintrc.js                    # SAST configuration for security linting
+├── .gitignore                      # Git ignore rules
+├── package.json                    # Root dependencies
+└── README.md                       # This file
