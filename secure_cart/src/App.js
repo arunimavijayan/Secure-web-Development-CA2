@@ -18,9 +18,9 @@
 // }
 
 // export default App;
-import React, { useState } from 'react'; // ADD useState
+import React, { useState } from 'react'; //useState
 import './App.css';
-// ADD Navigate and ProtectedRoute
+// Navigate and ProtectedRoute
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"; 
 import Login from './components/Login';
 import ShoppingCart from './components/shoppingcart';
@@ -45,7 +45,6 @@ function App() {
     setUser(null);
   };
   
-  // 4. Router: Pass state and handlers
   return (
     <div className="App">
       <Router>

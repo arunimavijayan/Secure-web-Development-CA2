@@ -16,24 +16,24 @@ const Login = ({ onLoginSuccess}) => {
             
             // if (result.message === 'Login successful') {
             //     localStorage.setItem('user', JSON.stringify({
-            //         username: result.username,
+            //         username: result.username,q
             //         role: result.role
             //     }));
             //     window.location.href = '/shopping_cart';
             // } else {
             if (result.message === 'Login successful') {
-                // FIX 2: Call the prop function to update global state
+  
                 onLoginSuccess({
                     username: result.username,
                     role: result.role
                 });
-                // The redirect is now handled by the Navigate in App.js
+        
             } else {
                 setError(result.error || 'Invalid credentials! Please enter correct Username and Password');
             }
         } catch (err) {
             console.error('Login error:', err);
-            setError('Login failed. Please check your credentials and try again.');
+            setError('Login failed. Please check your credentials and try again after 15 min.');
         }
     };
 
@@ -68,7 +68,7 @@ return (
               value={username} 
               onChange={(e) => setUsername(e.target.value)} 
               placeholder="Enter"
-              //  No input sanitization
+            
             />
           </div>
           
@@ -80,7 +80,7 @@ return (
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter"
-              //No rate limiting
+             
             />
           </div>
           

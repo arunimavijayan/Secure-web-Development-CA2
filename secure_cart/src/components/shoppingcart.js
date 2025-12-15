@@ -315,8 +315,8 @@
 
 import  { useState, useEffect } from 'react';
 import './ShoppingCart.css';
-// import ContactUs from './contactUs';
-// import SearchUsers from './searchUsers';
+import ContactUs from './contactUs';
+import SearchUsers from './searchUsers';
 import { getProducts, addProduct, deleteProduct as deleteProductApi } from '../services/api'; 
 
 // Helper function to safely escape HTML entities

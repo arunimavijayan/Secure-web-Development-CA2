@@ -188,7 +188,7 @@
 // export default SearchUsers;
 
 
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import './searchUsers.css';
 
 // FIX 1: Component now accepts 'user' prop from the parent component
@@ -198,7 +198,6 @@ const SearchUsers = ({ user }) => {
     const [mongoQuery, setMongoQuery] = useState('');
     
     // FIX 2: Removed local state (user, setUser, isAdmin, setIsAdmin) and its useEffect.
-    // We now derive these from the 'user' prop.
     
     const isAdmin = user && user.role === 'admin';
 
@@ -352,8 +351,7 @@ const SearchUsers = ({ user }) => {
                                     <th>Username</th>
                                     <th>Role</th>
                                     <th>Email</th>
-                                    <th>Password</th>
-                                    <th>Credit Card</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody>
