@@ -10,7 +10,6 @@ const ContactUs = () => {
     
     const [submissionResult, setSubmissionResult] = useState(null);
 
-    // No input sanitization
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -18,30 +17,6 @@ const ContactUs = () => {
             [name]: value
         }));
     };
-
-    // //Directly using user input without sanitization
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();      
-    //     // Basic validation
-    //     if (!formData.name || !formData.email || !formData.description) {
-    //         setSubmissionResult({
-    //             type: 'error',
-    //             message: 'Please fill in all fields.'
-    //         });
-    //         return;
-    //     }
-
-    //     // Email validation
-    //     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    //     if (!emailRegex.test(formData.email)) {
-    //         setSubmissionResult({
-    //             type: 'error',
-    //             message: 'Please enter a valid email address.'
-    //         });
-    //         return;
-    //     }
-
-    // In contactUs.js
 
 // to escape HTML entities
 const escapeHTML = (str) => {
@@ -51,7 +26,6 @@ const escapeHTML = (str) => {
               .replace(/"/g, '&quot;')
               .replace(/'/g, '&#39;');
 };
-
 // Secure handling of user input
 const handleSubmit = (e) => {
     e.preventDefault();      
@@ -97,19 +71,6 @@ const handleSubmit = (e) => {
         description: ''
     });
 };
-
-        //Directly inserting user input into JSX without sanitization
-        // setSubmissionResult({
-        //     type: 'success',
-        //     message: `
-        //         <h3>Thank you for your submission!</h3>
-        //         <p><strong>Name:</strong> ${formData.name}</p>
-        //         <p><strong>Email:</strong> ${formData.email}</p>
-        //         <p><strong>Description:</strong> ${formData.description}</p>
-        //         <p>We'll get back to you soon!</p>
-        //     `
-        // });
-        
 
     return (
         <div className="contact-us-section">
@@ -160,14 +121,6 @@ const handleSubmit = (e) => {
                     </button>
                 </form>
                 
-                {/* {submissionResult && (
-                    <div 
-                        className={`submission-result ${submissionResult.type}`}
-                        //Using dangerouslySetInnerHTML without sanitization
-                        dangerouslySetInnerHTML={{ __html: submissionResult.message }}
-                    />
-                )} */}
-
                 {submissionResult && (
                     <div className={`submission-result ${submissionResult.type}`}>
                         {/* SR5: Standard React rendering automatically escapes/encodes output */}

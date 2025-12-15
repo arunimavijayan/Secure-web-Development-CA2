@@ -197,11 +197,10 @@ const SearchUsers = ({ user }) => {
     const [results, setResults] = useState([]);
     const [mongoQuery, setMongoQuery] = useState('');
     
-    // FIX 2: Removed local state (user, setUser, isAdmin, setIsAdmin) and its useEffect.
-    
+    // FIX 2: Removed local state (user, setUser, isAdmin, setIsAdmin) and its useEffect.  
     const isAdmin = user && user.role === 'admin';
 
-    // Keep the security features (Copy/F12 protection)
+    // (Copy/F12 protection)
     useEffect(() => {
     const handleCopy = (e) => {
         if (e.target.className?.includes('sensitive-data')) {
@@ -300,7 +299,6 @@ const SearchUsers = ({ user }) => {
                     <p className="denied-message">
                         <strong>Access to User Search is restricted to administrators only.</strong>
                     </p>
-                    {/* Access user prop safely */}
                     <p>Current user: <strong>{user.username || 'Not logged in'}</strong></p>
                     <p>Role: <strong>{user.role || 'No role assigned'}</strong></p>
                 </div>

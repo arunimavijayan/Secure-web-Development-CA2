@@ -13,14 +13,6 @@ const Login = ({ onLoginSuccess}) => {
         try {
             console.log('Logging in via backend...');
             const result = await login(username, password);
-            
-            // if (result.message === 'Login successful') {
-            //     localStorage.setItem('user', JSON.stringify({
-            //         username: result.username,q
-            //         role: result.role
-            //     }));
-            //     window.location.href = '/shopping_cart';
-            // } else {
             if (result.message === 'Login successful') {
   
                 onLoginSuccess({

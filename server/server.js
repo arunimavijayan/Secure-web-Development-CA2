@@ -98,25 +98,6 @@ const productSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 const Product = mongoose.model('Product', productSchema);
 
-// // no input sanitization
-// app.post('/api/login', async (req, res) => {
-//     const { username, password } = req.body;   
-//     //vulnerable to injection
-//     const user = await User.findOne({ 
-//         username: username, 
-//         password: password // Plain text comparison
-//     }); 
-//     if (user) {
-//         res.json({
-//             username: user.username,
-//             role: user.role,
-//             message: 'Login successful'
-//         });
-//     } else {
-//         res.status(401).json({ error: 'Invalid credentials' });
-//     }
-// });
-
 // mitigation against brute force attack
 app.post('/api/login', loginLimiter, async (req, res) => {
     const { username, password } = req.body;
@@ -157,90 +138,6 @@ app.post('/api/login', loginLimiter, async (req, res) => {
     // Generic error message
     res.status(401).json({ error: 'Invalid credentials' });
 });
-
-// // Search users( NoSQL INJECTION)
-// app.post('/api/search-users', async (req, res) => {
-//     const { search } = req.body;  
-    
-//     console.log(' Raw search input:', search);
-//     console.log('Type:', typeof search);
-    
-//     //  Handle all injection patterns
-//     let query = {};
-    
-//     if (!search || search === '' || search === '{}' || search === '*' || search === 'all') {
-//         // Empty or special values return all
-//         query = {};
-//     } else if (search && typeof search === 'string') {
-//         const trimmed = search.trim();
-        
-//         // Handle JSON injection patterns
-//         if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
-//             try {
-//                 const cleanJson = trimmed.replace(/\s+/g, '');
-//                 console.log('Cleaning JSON:', cleanJson);               
-//                 const parsed = JSON.parse(cleanJson);
-//                 console.log('Parsed JSON:', parsed);                
-//                 //Different handling based on structure
-//                 if (parsed.$regex) {
-//                     // {"$regex":".*"} pattern
-//                     query = { username: { $regex: '.*' } };
-//                 } else if (parsed.$ne !== undefined) {
-//                     // {"$ne":null} pattern
-//                     query = { username: { $ne: null } };
-//                 } else if (parsed.$gt !== undefined) {
-//                     // {"$gt":""} pattern
-//                     query = { username: { $gt: '' } };
-//                 } else if (parsed.$exists !== undefined) {
-//                     // {"$exists":true} pattern
-//                     query = { username: { $exists: true } };
-//                 } else if (parsed.$or) {
-//                     // {"$or":[{"username":{"$exists":true}}]} pattern
-//                     query = { $or: [{ username: { $exists: true } }] };
-//                 } else if (Object.keys(parsed).length === 0) {
-//                     // Empty object {}
-//                     query = {};
-//                 } else {
-                    
-//                     query = parsed;
-//                 }
-                
-//             } catch (e) {
-//                 console.log(' JSON parse error:', e.message);
-//                 // Still try to extract operators
-//                 if (trimmed.includes('$ne')) {
-//                     query = { username: { $ne: null } };
-//                 } else if (trimmed.includes('$regex')) {
-//                     query = { username: { $regex: '.*' } };
-//                 } else if (trimmed.includes('$or')) {
-//                     query = { $or: [{ username: { $exists: true } }] };
-//                 } else {
-//                     query = { username: trimmed };
-//                 }
-//             }
-//         }
-
-//         else if (trimmed === 'admin' || trimmed === 'john' || trimmed === 'alice' || 
-//                  trimmed === 'bob' || trimmed === 'arunima') {
-//             query = { username: trimmed };
-//         }
-
-//         else {
-//             query = { username: trimmed };
-//         }
-//     }
-    
-//     console.log('Final query:', JSON.stringify(query));
-    
-//     try {
-//         const users = await User.find(query);
-//         console.log(`Found ${users.length} users`);
-//         res.json(users);
-//     } catch (error) {
-//         console.error('Database error:', error);
-//         res.json([]);
-//     }
-// });
 
 //Mitigation to search users api
 // function to safely escape regex
@@ -285,11 +182,6 @@ app.get('/api/products', async (req, res) => {
     res.json(products);
 });
 
-// app.post('/api/products', async (req, res) => {
-//     const product = new Product(req.body);
-//     await product.save();
-//     res.json(product);
-// });
 const sanitize = require('sanitize-html');
 
 app.post('/api/products', authenticateToken, async (req, res) => {
@@ -309,7 +201,6 @@ app.post('/api/products', authenticateToken, async (req, res) => {
     if (isNaN(price) || price <= 0 || !name || !description) {
         return res.status(400).json({ error: 'Invalid product data.' });
     }
-
     try {
         const newProduct = await Product.create({ name, price, description, category });
         res.status(201).json(newProduct);
@@ -332,13 +223,6 @@ app.get('/api/current-user', (req, res) => {
     // Failure: No valid token found in cookie
     res.status(401).json({ error: 'User is not authenticated' });
 });
-
-// // No authentication for delete
-// app.delete('/api/products/:id', async (req, res) => {
-//     await Product.findByIdAndDelete(req.params.id);
-//     res.json({ message: 'Deleted' });
-// });
-
 //Mitigation for delete api
 // Enforce Admin Role for deletion (SR3)
 app.delete('/api/products/:id', isAdmin, async (req, res) => {
@@ -351,63 +235,9 @@ app.delete('/api/products/:id', isAdmin, async (req, res) => {
 });
 
 // Seed database with initial data
-// app.post('/api/seed', async (req, res) => {
-//     await User.deleteMany({});
-//     await Product.deleteMany({});
-    
-//     await User.create([
-//         { 
-//             username: 'john', 
-//             password: 'john123', 
-//             role: 'user', 
-//             email: 'john@securecart.com', 
-//             creditCard: '4111-1111-1111-1111' 
-//         },
-//         { 
-//             username: 'admin', 
-//             password: 'admin123', 
-//             role: 'admin', 
-//             email: 'admin@securecart.com', 
-//             creditCard: '4222-2222-2222-2222' 
-//         },
-//         { 
-//             username: 'arunima', 
-//             password: 'arun123', 
-//             role: 'user', 
-//             email: 'arunima@securecart.com', 
-//             creditCard: '4333-3333-3333-3333' 
-//         },
-//         { 
-//             username: 'alice', 
-//             password: 'alice123', 
-//             role: 'user', 
-//             email: 'alice@securecart.com', 
-//             creditCard: '4444-4444-4444-4444' 
-//         },
-//         { 
-//             username: 'bob', 
-//             password: 'bob123', 
-//             role: 'user', 
-//             email: 'bob@securecart.com', 
-//             creditCard: '4555-5555-5555-5555' 
-//         }
-//     ]);
-    
-//     await Product.create([
-//         { name: 'Laptop', price: 700, description: 'High-performance laptop', category: 'Electronics' },
-//         { name: 'Smartphone', price: 100, description: 'Latest smartphone', category: 'Electronics' },
-//         { name: 'Headphones', price: 80, description: 'Noise-cancelling headphones', category: 'Electronics' }
-//     ]);
-    
-//     res.json({ message: 'Database seeded' });
-// });
-
-// SECURE SEED ENDPOINT (Replace the entire app.post('/api/seed', ...) block)
-// Seed database with initial data
 app.post('/api/seed', async (req, res) => {
     await User.deleteMany({});
-    await Product.deleteMany({});
-    
+    await Product.deleteMany({});   
     // Hashing passwords for secure storage
     const saltRounds = 10;
     const hashedPasswordJohn = await bcrypt.hash('john123', saltRounds);
@@ -415,7 +245,6 @@ app.post('/api/seed', async (req, res) => {
     const hashedPasswordArunima = await bcrypt.hash('arun123', saltRounds);
     const hashedPasswordAlice = await bcrypt.hash('alice123', saltRounds);
     const hashedPasswordBob = await bcrypt.hash('bob123', saltRounds);
-
     await User.create([
         { 
             username: 'john', 
@@ -464,8 +293,7 @@ app.post('/api/seed', async (req, res) => {
 });
 //validating server-side
 app.post('/api/validate-cart', authenticateToken, async (req, res) => {
-    const { cartItems } = req.body;
-    
+    const { cartItems } = req.body;   
     // Validate each item exists and price matches
     const validatedItems = await Promise.all(
         cartItems.map(async item => {
